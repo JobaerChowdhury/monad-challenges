@@ -24,3 +24,7 @@ allCombs f (a:as) bs = (placeOne f a bs) ++ (allCombs f as bs)
 placeOne :: (a -> b -> c) -> a -> [b] -> [c]
 placeOne _ _ [] = []
 placeOne f x (y:ys) = [f x y] ++ (placeOne f x ys)
+
+allCombs3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+allCombs3 = undefined 
+
