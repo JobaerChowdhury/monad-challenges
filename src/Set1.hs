@@ -54,11 +54,20 @@ generalPair f g = \x -> let (a, s1) = f x in (let (b, s2) = g s1 in ((a,b), s2))
 generalB :: Gen a -> Gen b -> (a -> b -> c) -> Gen c 
 generalB f g h = \x -> let (a, s1) = f x in (let (b, s2) = g s1 in ((h a b), s2)) 
 
+generalB2 :: Gen a -> Gen b -> (a -> b -> c) -> Gen c
+generalB2 ga gb f = genTwo ga (\a -> genTwo gb (\b -> mkGen (f a b)))
+
 generalPair2 :: Gen a -> Gen b -> Gen (a, b)
 generalPair2 g h = generalB g h (,)
 
 repRandom :: [Gen a] -> Gen [a]
 repRandom gs = \x -> foldl comb1 ([], x) gs  
+
+-- try implementing it using generalA, genTwo and mkGen 
+-- generalA :: (a -> b) -> Gen a -> Gen b 
+-- genTwo :: Gen a -> (a -> Gen b) -> Gen b 
+repRandom2 :: [Gen a] -> Gen [a]
+repRandom2 = undefined 
 
 comb1 :: ([a], Seed) -> Gen a -> ([a], Seed)
 comb1 (ls, s) f = let (n, s1) = f s in (ls ++ [n], s1) 
@@ -69,11 +78,3 @@ genTwo g f = \s -> let (r, s1) = g s in (f r) s1
 
 mkGen :: a -> Gen a 
 mkGen x = \s -> (x, s) 
-
-
-
-
-
-
-
-

@@ -17,14 +17,17 @@ allCards :: [Int] -> [String] -> [Card]
 allCards is ss = allCombs Card is ss 
 
 allCombs :: (a -> b -> c) -> [a] -> [b] -> [c]
-allCombs _ [] _ = []
-allCombs _ _ [] = []
-allCombs f (a:as) bs = (placeOne f a bs) ++ (allCombs f as bs)
+allCombs f as bs = concat $ map (\b -> combStep afs (replicate n b)) bs  
+	where 
+		afs = map (\a -> f a) as
+		n = length afs  
 
-placeOne :: (a -> b -> c) -> a -> [b] -> [c]
-placeOne _ _ [] = []
-placeOne f x (y:ys) = [f x y] ++ (placeOne f x ys)
-
+-- todo: it should produce the output in correct order 
 allCombs3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
-allCombs3 = undefined 
+allCombs3 f as bs cs = concat $ map (\c -> combStep bfs (replicate (length bfs) c)) cs   
+	where 
+		afs = map (\a -> f a) as 
+		bfs = concat $ map (\b -> combStep afs (replicate (length afs) b)) bs 
 
+combStep :: [a -> b] -> [a] -> [b]
+combStep fs as = zipWith (\ f a -> f a) fs as
