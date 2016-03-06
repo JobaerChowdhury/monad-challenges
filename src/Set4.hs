@@ -4,7 +4,6 @@
 module Set4 where
 
 import MCPrelude
-import Set2
 
 class Monad m where
 	bind :: m a -> (a -> m b) -> m b	
@@ -17,6 +16,19 @@ instance Monad Maybe where
 instance Monad [] where
 	bind ls f = undefined  
 	return a = [a]
+
+data Maybe a = Nothing | Just a 
+
+instance Show a => Show (Maybe a) where
+	show (Just a) = "Just " ++ show a 
+	show Nothing = "Nothing" 
+
+link :: Maybe a -> (a -> Maybe b) -> Maybe b
+link Nothing _ = Nothing
+link (Just a) f = f a 
+
+mkMaybe :: a -> Maybe a
+mkMaybe a = Just a 
 
 newtype Gen a = Gen { runGen :: Seed -> (a, Seed) }
 
