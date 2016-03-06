@@ -67,3 +67,6 @@ sequence mas = foldl step (return []) mas
 
 ap :: (Monad m) => m (a -> b)-> m a -> m b 
 ap mf ma = bind mf (\f -> bind ma (\a -> return (f a)))
+
+fmap :: (Monad m) => (a -> b) -> m a -> m b 
+fmap f ma = bind ma (\a -> return $ f a)
