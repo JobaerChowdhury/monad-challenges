@@ -14,7 +14,7 @@ instance Monad Maybe where
 	return = mkMaybe 
 
 instance Monad [] where
-	bind ls f = undefined  
+	bind ls f = concat $ map f ls   
 	return a = [a]
 
 data Maybe a = Nothing | Just a 
